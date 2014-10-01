@@ -1,7 +1,3 @@
-### npg_basespace-smalt
+### npg_p4-bwa_mem
 
-##### Description
-`npg_basespace-smalt` contains Dockerfiles for setting up smalt alignment pipelines inside a Docker container, that can be uploaded as a Illumina Basespace Native App.
-
-`Dockerfile` uses pre-built binaries to achieve a smaller image size.
-`Dockerfile.scratch` builds everything from scratch.
+Container for bwa_mem alignment pipeline orchestrated by p4.

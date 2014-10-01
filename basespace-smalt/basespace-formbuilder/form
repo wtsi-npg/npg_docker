@@ -1,0 +1,120 @@
+{
+  "$type": "Form",
+  "fields":[
+    {
+      "$type": "TextBox",
+      "size": 300,
+      "value": "default value!",
+      "label": "App Session Name",
+      "required": true,
+      "requiredMessage": "Please enter name for your app session.",
+      "id": "app-session-name"
+    },
+    {
+        "$type": "SectionBreak"
+    },
+    {
+        "$type": "SampleChooser",
+        "size": 300,
+        "allowedPermissions": "read",
+        "label": "Input Sample",
+        "required": true,
+        "requiredMessage": "Please choose a sample",
+        "id": "sample-id"
+    },
+    {
+      "$type": "Select",
+      "id": "select-ref",
+      "label": "Select reference",
+      "multiselect": false,
+      "choices": [
+        {
+          "value": "/references/Escherichia_coli_K_12_DH10B_Ensembl_EB1/ecoli",
+          "text": "Escherichia Coli (K12_DH10B)",
+          "selected": true
+        },
+        {
+          "value": "/references/PhiX/PhiX_Illumina_RTA/phix",
+          "text": "PhiX",
+          "selected": false
+        }
+      ]
+    },
+    {
+        "$type": "SectionBreak",
+      "id": "section-break-1"
+    },
+    {
+        "$type": "ProjectChooser",
+        "size": 300,
+        "valueType": "Output",
+        "allowedPermissions": "owner",
+        "label": "Save results to",
+        "required": true,
+        "requiredMessage": "Please choose a project",
+        "id": "project-id"
+    },
+    {
+        "$type": "SectionBreak"
+    },
+    {
+        "$type": "FieldSet",
+      "id": "index",
+      "label": "INDEX Options (optional)",
+      "isCollapsible": true,
+      "isOpen": false,
+      "fields": [
+            {
+                "$type": "TextBox",
+                "size": 300,
+              "value": "13",
+              "label": "Word length",
+              "required": false,
+              "id": "index-wordlen",
+              "helpText": "Sets the length of the hashed words. wordlen is an integer with 2 < wordlen <= 20 (default: 13)."
+            },
+            {
+                "$type": "TextBox",
+                "size": 300,
+                "value": "13",
+              "label": "Sampling step size",
+              "required": false,
+              "id": "index-skipstep",
+              "helpText": "Sampling step size, i.e. the distance between successive words that are hashed along the genomic reference sequence. With the option -s 1 every word is hashed, with -s 2 every second word, with -s 3 very third etc. By default skipstep is set equal to wordlen."
+            }
+        ]
+    },
+    {
+        "$type": "SectionBreak"
+    },
+    {
+        "$type": "FieldSet",
+        "id": "index",
+      "label": "MAP Options (optional)",
+      "isCollapsible": true,
+      "isOpen": false,
+      "fields": [
+            {
+                "$type": "TextBox",
+                "size": 300,
+              "value": "500",
+              "label": "Maximum insert size",
+              "required": false,
+              "id": "map-max",
+              "helpText": "Minimum insert size for paired-end reads insertmax is a positive integer (default 0)"
+            },
+            {
+                "$type": "TextBox",
+                "size": 300,
+                "value": "0",
+              "label": "Minimum insret size",
+              "required": false,
+              "id": "map-min",
+              "helpText": "Minimum insert size for paired-end reads insertmax is a positive integer (default 0)"
+            }
+        ]
+    }
+  ],
+  "rulesets": [],
+  "id": "form-container"
+}

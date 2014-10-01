@@ -1,0 +1,3 @@
+IN=$1
+OUT=$(echo "$1" | sed "s/\.[^.]*$/.json/g")
+grep -v "^#" "$IN" | tr -d "\n\t" > "$OUT"

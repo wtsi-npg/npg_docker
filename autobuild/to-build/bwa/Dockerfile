@@ -7,7 +7,7 @@ MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 WORKDIR /home/build/
 RUN git clone -b 0.7.8 https://github.com/lh3/bwa.git bwa
 
-# Build samtools
+# Build bwa
 WORKDIR ./bwa
 RUN make
 

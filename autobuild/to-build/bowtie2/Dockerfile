@@ -7,7 +7,7 @@ MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 WORKDIR /home/build/
 RUN git clone -b v2.2.0 https://github.com/BenLangmead/bowtie2.git bowtie2
 
-# Build samtools
+# Build bowtie2
 WORKDIR ./bowtie2
 RUN make
 

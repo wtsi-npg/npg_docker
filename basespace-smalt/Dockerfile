@@ -1,8 +1,21 @@
-FROM sanger_npg/autobuild-baseimage
+FROM ubuntu:14.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
+
+# Install dependencies
+RUN sudo apt-get update &&\
+    sudo apt-get install -yqq gnuplot \
+                              git \
+                              wget \
+                              build-essential \
+                              zlib1g-dev \
+                              autoconf \
+                              automake \
+                              libtool \
+                              pkg-config
+
+
 # Download bioinformatics tools; stick on top of Dockerfile for easier version changes
-RUN sudo apt-get update && sudo apt-get install -yqq gnuplot
 WORKDIR /home
 RUN git clone -b 0.0.50-release-20140430085950 https://github.com/gt1/bambamc.git bambamc &&\
     wget -O smalt.tar.gz \
@@ -14,7 +27,8 @@ RUN wget -O samtools.tar.bz2 \
 RUN git clone -b libmaus_experimental_0_0_153 https://github.com/gt1/libmaus.git libmaus &&\
     git clone -b biobambam_experimental_0_0_163 https://github.com/gt1/biobambam.git biobambam
 
-# Build dependency lib for smalt SAM support
+
+# Build bambamc lib (for smalt bam support)
 WORKDIR ./bambamc
 RUN autoreconf -i -f &&\
     ./configure &&\

@@ -3,8 +3,8 @@
 ##### Description
 `npg_basespace-smalt` contains Dockerfiles for setting up smalt alignment pipelines inside a Docker container, that can be uploaded as a Illumina Basespace Native App.
 
-`Dockerfile` uses build-baseimage (see `../autobuild/baseimage`) to avoid redundancy. This image will be uploaded to the Docker repository at one point.
-`Dockerfile.scratch` builds everything from scratch.
+`Dockerfile` builds everything from scratch.
+`Dockerfile.baseimage` uses build-baseimage (see `../autobuild/baseimage`) to avoid redundancy. This image will be uploaded to the Docker repository at one point.
 
 ###### Quick Start: Upload to Basespace
 1. Create [Dev Account](https://developer.basespace.illumina.com/)

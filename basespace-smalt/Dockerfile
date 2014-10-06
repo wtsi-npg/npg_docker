@@ -12,7 +12,9 @@ RUN sudo apt-get update &&\
                               autoconf \
                               automake \
                               libtool \
-                              pkg-config
+                              pkg-config \
+                              libncurses5-dev \
+                              libncursesw5-dev
 
 
 # Download bioinformatics tools; stick on top of Dockerfile for easier version changes

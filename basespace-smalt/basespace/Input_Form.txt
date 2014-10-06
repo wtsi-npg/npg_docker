@@ -20,7 +20,8 @@
       "label": "Input Sample",
       "required": true,
       "requiredMessage": "Please choose a sample",
-      "id": "sample-id"
+      "id": "sample-id",
+      "rules": "sample-is-not-empty"
     },
     {
       "$type": "Select",
@@ -115,6 +116,13 @@
       ]
     }
   ],
-  "rulesets": [],
+  "rulesets": [
+    {
+      "$type": "EmptySampleValidationRule",
+      "message": "The sample cannot be empty",
+      "field": "EmptySample",
+      "id": "sample-is-not-empty"
+    }
+  ],
   "id": "form-container"
 }

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright (c) 2014 Genome Research Ltd.
 # Author: Stefan Dang <sd15@sanger.ac.uk>

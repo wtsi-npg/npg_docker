@@ -1,4 +1,4 @@
-### npg_basespace-smalt
+### basespace-smalt
 
 ##### Description
 `npg_basespace-smalt` contains Dockerfiles for setting up smalt alignment pipelines inside a Docker container, that can be uploaded as a Illumina Basespace Native App.

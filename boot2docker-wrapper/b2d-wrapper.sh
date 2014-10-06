@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright (c) 2014 Genome Research Ltd.
 # Author: Stefan Dang <sd15@sanger.ac.uk>
@@ -12,15 +12,15 @@
 #   IT IS NOT RECOMMENDED FOR EXTENSIVE USE. Please refer to
 #   https://github.com/stepf/boot2docker-fileIO-wrapper
 
+set -o pipefail
 set -e
-set -o
 
 
 # GLOBALS ######################################################################
-PROG=$0
-INPUT_DIR=$1
-OUTPUT_DIR=$2
-IMAGE=$3
+PROG=$0; shift          # $0
+INPUT_DIR=$0; shift     # $1
+OUTPUT_DIR=$0; shift    # $2
+IMAGE=$0; shift         # $4
 DUID="$IMAGE_$RANDOM"   # Unique ID to avoid multithreading conflicts
 
 # B2D_fileIO

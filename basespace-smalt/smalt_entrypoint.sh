@@ -15,7 +15,7 @@ INSERT_MIN=$1; shift              # $6
 [[ -z "$INDEX_WORDLEN" ]] && INDEX_WORDLEN="13"
 [[ -z "$INDEX_STEPSIZE" ]] && INDEX_STEPSIZE="$INDEX_WORDLEN"
 [[ -z "$INSERT_MAX" ]] && INSERT_MAX="500"
-[[ -z "$INSERT_MIN" ]] && INSERT_MIN="0"
+[[ -z "$INSERT_MIN" ]] &&  INSERT_MIN="0"
 
 # Indexing
 smalt index -k "$INDEX_WORDLEN" -s "$INDEX_STEPSIZE" "$INDEX" "$INDEX.fa"
@@ -33,7 +33,7 @@ for input_file in /data/input/samples/*/*; do
     gzip -dc "$input_file" > input.fastq
 
     # Set post-processing pipeline:
-    # bamsort -> bamstreamingduplicates -> samtools flagstat & stats -> recompress
+    # bamsort | bamstreamingduplicates | samtools flagstat & stats | recompress
     mkfifo postproc_pipe && \
     bamsort level=0 SO=coordinates fixmates=1 adddupmarksupport=1 \
     < postproc_pipe \
@@ -54,17 +54,18 @@ for input_file in /data/input/samples/*/*; do
 
     # Else: Map single reads, pipe into postproc_pipe
     else
-      mate=""
       smalt map -n "$(nproc)" -f bam "$INDEX" input.fastq > postproc_pipe
     fi
 
-    wait
+    wait # for pipe: incomplete results otherwise
 
     # Plot stats
-    plot-bamstats "$output_file.stats" -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$filename"
+    plot-bamstats "$output_file.stats" \
+     -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$filename"
 
     # Tidy up
-    rm -f postproc_pipe input.fastq "$mate"
+    rm postproc_pipe input.fastq
+    [[ -e "$mate" ]] && rm "$mate"
   fi
 done
 

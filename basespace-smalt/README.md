@@ -9,7 +9,7 @@
 ###### Quick Start Instructions: Get it running on BaseSpace
 1. Create [Dev Account](https://developer.basespace.illumina.com/)
 2. Create [Native App](https://developer.basespace.illumina.com/apps/new)
-3. (For testing): Install the [SpaceDock VM](https://developer.basespace.illumina.com/docs/content/documentation/native-apps/setup-dev-environment#Instructions_for_Mac_or_Linux)
+3. (For local testing): Install the [SpaceDock VM](https://developer.basespace.illumina.com/docs/content/documentation/native-apps/setup-dev-environment#Instructions_for_Mac_or_Linux)
 4. Build image and push it to Basespace
 ```
 # Use your BaseSpace credentials when prompted for username, password, and email

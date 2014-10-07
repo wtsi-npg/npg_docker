@@ -4,9 +4,7 @@ MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Install dependencies
 RUN sudo apt-get update &&\
-    sudo apt-get install -yqq git \
-                              wget \
-                              build-essential \
+    sudo apt-get install -yqq build-essential \
                               zlib1g-dev \
                               autoconf \
                               automake \
@@ -14,6 +12,8 @@ RUN sudo apt-get update &&\
                               pkg-config \
                               libncurses5-dev \
                               libncursesw5-dev \
+                              git \
+                              wget \
                               gnuplot
 
 

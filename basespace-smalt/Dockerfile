@@ -56,7 +56,9 @@ RUN autoreconf -i -f &&\
 WORKDIR ../samtools-1.1
 RUN make && make install
 
-# Add references and entrypoint script
+
+# Setting up environment for running on BaseSpace
+ENV LD_LIBRARY_PATH LD_LIBRARY_PATH:/usr/local/lib
 ADD ./references /references
 ADD ./smalt_entrypoint.sh /smalt_entrypoint.sh
 RUN chmod +x /smalt_entrypoint.sh

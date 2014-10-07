@@ -1,12 +1,15 @@
 ### basespace-smalt
 
 ##### Description
-`npg_basespace-smalt` contains Dockerfiles for setting up smalt alignment pipelines inside a Docker container, that can be uploaded as a Illumina Basespace Native App.
+*This application was developed by Stefan Dang while on a summer student placement at the Wellcome Trust Sanger Institute, NPG group in August-October 2014*
+
+basespace-smalt sets up an alignment pipeline inside a Docker container, that can be uploaded as a Illumina Basespace Native App. The alignment is performed by smalt. The resulting bam file is post-processed by bamsort, bamstreamingmarkduplicates and samtools flagstat / stats. An index file, md5 as well as flagstat plots are generated.
 
 `Dockerfile` builds everything from scratch.
 `Dockerfile.baseimage` uses build-baseimage (see `../autobuild/baseimage`) to avoid redundancy. This image will be uploaded to the Docker repository at one point.
 
 ###### Quick Start Instructions: Get it running on BaseSpace
+0. Install Docker
 1. Create [Dev Account](https://developer.basespace.illumina.com/)
 2. Create [Native App](https://developer.basespace.illumina.com/apps/new)
 3. (For local testing): Install the [SpaceDock VM](https://developer.basespace.illumina.com/docs/content/documentation/native-apps/setup-dev-environment#Instructions_for_Mac_or_Linux)

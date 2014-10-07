@@ -4,8 +4,7 @@ MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Install dependencies
 RUN sudo apt-get update &&\
-    sudo apt-get install -yqq gnuplot \
-                              git \
+    sudo apt-get install -yqq git \
                               wget \
                               build-essential \
                               zlib1g-dev \
@@ -14,7 +13,8 @@ RUN sudo apt-get update &&\
                               libtool \
                               pkg-config \
                               libncurses5-dev \
-                              libncursesw5-dev
+                              libncursesw5-dev \
+                              gnuplot
 
 
 # Download bioinformatics tools; stick on top of Dockerfile for easier version changes
@@ -24,7 +24,7 @@ RUN git clone -b 0.0.50-release-20140430085950 https://github.com/gt1/bambamc.gi
     http://sourceforge.net/projects/smalt/files/smalt-0.7.6.tar.gz/download &&\
     tar -xf smalt.tar.gz
 RUN wget -O samtools.tar.bz2 \
-    http://sourceforge.net/projects/samtools/files/samtools/1.0/samtools-1.0.tar.bz2/download &&\
+    http://sourceforge.net/projects/samtools/files/samtools/1.1/samtools-1.1.tar.bz2/download &&\
     tar -xjf samtools.tar.bz2
 RUN git clone -b libmaus_experimental_0_0_153 https://github.com/gt1/libmaus.git libmaus &&\
     git clone -b biobambam_experimental_0_0_163 https://github.com/gt1/biobambam.git biobambam
@@ -53,7 +53,7 @@ RUN autoreconf -i -f &&\
     make && make install
 
 # Build samtools
-WORKDIR ../samtools-1.0
+WORKDIR ../samtools-1.1
 RUN make && make install
 
 # Add references and entrypoint script

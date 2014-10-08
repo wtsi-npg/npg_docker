@@ -3,6 +3,11 @@
 # Copyright (c) 2014 Genome Research Ltd.
 # Author: Stefan Dang <sd15@sanger.ac.uk>
 
+# Error function printing to stdio because of BaseSpace convention
+function err {
+  echo "$1" && exit 1
+}
+
 set -o pipefail
 set -e
 
@@ -13,6 +18,7 @@ INDEX_WORDLEN=$1; shift           # $3
 INDEX_STEPSIZE=$1; shift          # $4
 INSERT_MAX=$1; shift              # $5
 INSERT_MIN=$1; shift              # $6
+COUNTER=0                         # Make sure alignment has run at least once
 
 # Catch empty input, set to standard values
 [[ -z "$INDEX_WORDLEN" ]] && INDEX_WORDLEN="13"
@@ -33,7 +39,7 @@ for input_file in /data/input/samples/*/*; do
 
   # Only process R1 (following Illumina naming convention), check for R2 below
   if [[ $filename =~ _R1_[0-9]{3} ]]; then
-    gzip -dc "$input_file" > input.fastq
+    gzip -dc "$input_file" > input.fastq || err "Could not decompress $filename. Valid sample?"
 
     # Set post-processing pipeline:
     # bamsort | bamstreamingduplicates | samtools flagstat & stats | recompress
@@ -62,14 +68,27 @@ for input_file in /data/input/samples/*/*; do
 
     wait # for pipe: incomplete results otherwise
 
+    # Check if results are complete
+    if ! [[ -e "$output_file.bam" && -e "$output_file.flagstat" && -e "$output_file.stats" \
+      && -e "$output_file.md5" && -e "$output_file.index" ]]; then
+      err "Results for $input_file are incomplete."
+    fi
+
     # Plot stats
     plot-bamstats "$output_file.stats" \
-     -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$filename"
+   -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$filename"
 
     # Tidy up
     rm postproc_pipe input.fastq
     [[ -e "$mate" ]] && rm "$mate"
+
+    ((COUNTER++))
   fi
+
 done
+
+# Make sure loop has run at least once
+[[ $COUNTER == 0 ]] && err "No alignment has been performed. Please choose \
+  compatible fastq.gz input samples"
 
 exit 0

@@ -11,6 +11,7 @@ ENV bcel_version 5.2
 ENV picard_version 1.72
 ENV htsjdk_version 1.120
 ENV samtools_version 1.1
+# TODO: Add p4 version, staying on most recent version for development
 
 
 # Install dependencies
@@ -83,16 +84,11 @@ RUN make
 WORKDIR ..
 
 # Build p4
-WORKDIR ../p4/
+RUN git clone https://github.com/wtsi-npg/p4.git p4
+WORKDIR ./p4/
 RUN perl ./Build.PL &&\
     ./Build installdeps &&\
     chmod +x ./bin/* &&\
     cp ./bin/* /usr/local/bin
+WORKDIR ..
 
-
-# p4 Entrypoint
-WORKDIR ../../
-ADD ./p4_entrypoint.sh /p4_entrypoint.sh
-RUN chmod +x p4_entrypoint.sh
-ENTRYPOINT ["./p4_entrypoint.sh"]
-CMD ["bash"]

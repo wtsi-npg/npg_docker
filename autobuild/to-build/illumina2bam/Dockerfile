@@ -17,6 +17,6 @@ RUN export CLASSPATH=/home/build/bcel-5.2/bcel-5.2.jar && ant jar
 WORKDIR ..
 
 # Copy
-RUN echo "#!/bin/bash\nmkdir /shared/illumina2bam && cp -r ./dist/* /autobuild/illumina2bam" \
+RUN echo "#!/bin/bash\nmkdir /autobuild/illumina2bam && cp -r ./dist/* /autobuild/illumina2bam" \
       >> copy.sh && chmod +x copy.sh
 CMD ["./copy.sh"]

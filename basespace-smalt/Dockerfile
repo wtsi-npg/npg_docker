@@ -1,6 +1,13 @@
 FROM ubuntu:14.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
+# Bioinformatics Tools Versions
+# TODO: smalt and samtools still have hard-coded WORKDIR instructions, see below
+ENV bambamc_version 0.0.50-release-20140430085950
+ENV smalt_version 0.7.6
+ENV samtools_version 1.1
+ENV libmaus_version libmaus_experimental_0_0_153
+ENV biobambam_version biobambam_experimental_0_0_163
 
 # Install dependencies
 RUN sudo apt-get update &&\
@@ -17,50 +24,54 @@ RUN sudo apt-get update &&\
                               gnuplot
 
 
-# Download bioinformatics tools; stick on top of Dockerfile for easier version changes
+# Build bioinformatics tools in /home:
 WORKDIR /home
-RUN git clone -b 0.0.50-release-20140430085950 https://github.com/gt1/bambamc.git bambamc &&\
-    wget -O smalt.tar.gz \
-    http://sourceforge.net/projects/smalt/files/smalt-0.7.6.tar.gz/download &&\
-    tar -xf smalt.tar.gz
-RUN wget -O samtools.tar.bz2 \
-    http://sourceforge.net/projects/samtools/files/samtools/1.1/samtools-1.1.tar.bz2/download &&\
-    tar -xjf samtools.tar.bz2
-RUN git clone -b libmaus_experimental_0_0_153 https://github.com/gt1/libmaus.git libmaus &&\
-    git clone -b biobambam_experimental_0_0_163 https://github.com/gt1/biobambam.git biobambam
-
 
 # Build bambamc lib (for smalt bam support)
+RUN git clone -b $bambamc_version https://github.com/gt1/bambamc.git bambamc
 WORKDIR ./bambamc
 RUN autoreconf -i -f &&\
     ./configure &&\
     make && make install
+WORKDIR ..
 
 # Build smalt
-WORKDIR ../smalt-0.7.6
+RUN wget -qO- http://sourceforge.net/projects/smalt/files/smalt-$smalt_version.tar.gz/download \
+    | tar -xz
+# TODO: Use env variable as soon as docker 1.3 is released
+WORKDIR ./smalt-0.7.6
 RUN ./configure &&\
     make && make install
+WORKDIR ..
 
 # Build libmaus
-WORKDIR ../libmaus
+RUN git clone -b $libmaus_version https://github.com/gt1/libmaus.git libmaus
+WORKDIR ./libmaus
 RUN autoreconf -i -f && ./configure &&\
     make && make install
+WORKDIR ..
 
 # Build biobambam
-WORKDIR ../biobambam
+RUN git clone -b $biobambam_version https://github.com/gt1/biobambam.git biobambam
+WORKDIR ./biobambam
 RUN autoreconf -i -f &&\
     ./configure --with-libmaus=${LIBMAUSPREFIX} --prefix=${HOME}/biobambam &&\
     make && make install
+WORKDIR ..
 
 # Build samtools
-WORKDIR ../samtools-1.1
+RUN wget -qO- http://sourceforge.net/projects/samtools/files/samtools/$samtools_version/\
+    samtools-$samtools_version.tar.bz2/download | tar -xzj
+# TODO: Use env variable as soon as docker 1.3 is released
+WORKDIR ./samtools-1.1
 RUN make && make install
+WORKDIR ..
 
 
 # Setting up environment for running on BaseSpace
 ENV LD_LIBRARY_PATH LD_LIBRARY_PATH:/usr/local/lib
-ADD ./references /references
-ADD ./smalt_entrypoint.sh /smalt_entrypoint.sh
+COPY ./references /references
+COPY ./smalt_entrypoint.sh /smalt_entrypoint.sh
 RUN chmod +x /smalt_entrypoint.sh
-WORKDIR ../../../
+WORKDIR ../../
 CMD ["/smalt_entrypoint.sh"]

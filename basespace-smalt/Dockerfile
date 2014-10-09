@@ -60,8 +60,7 @@ RUN autoreconf -i -f &&\
 WORKDIR ..
 
 # Build samtools
-RUN wget -qO- http://sourceforge.net/projects/samtools/files/samtools/$samtools_version/\
-    samtools-$samtools_version.tar.bz2/download | tar -xzj
+RUN wget -qO- http://sourceforge.net/projects/samtools/files/samtools/$samtools_version/samtools-$samtools_version.tar.bz2/download | tar -xj
 # TODO: Use env variable as soon as docker 1.3 is released
 WORKDIR ./samtools-1.1
 RUN make && make install

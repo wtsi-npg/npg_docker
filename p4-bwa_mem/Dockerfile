@@ -11,12 +11,13 @@ ENV bcel_version 5.2
 ENV picard_version 1.72
 ENV htsjdk_version 1.120
 ENV samtools_version 1.1
-# TODO: Add p4 version, staying on most recent version for development
+# TODO: Add p4 version, staying on most recent version for development for now
 
 
 # Install dependencies
 RUN apt-get update -q &&\
     apt-get install -qy build-essential \
+                        ant \
                         autoconf \
                         automake \
                         git \

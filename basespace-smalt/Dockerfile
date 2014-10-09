@@ -2,12 +2,12 @@ FROM debian:jessie
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Bioinformatics Tools Versions
-# TODO: smalt and samtools still have hard-coded WORKDIR instructions, see below
 ENV bambamc_version 0.0.50-release-20140430085950
 ENV smalt_version 0.7.6
 ENV samtools_version 1.1
 ENV libmaus_version libmaus_experimental_0_0_153
 ENV biobambam_version biobambam_experimental_0_0_163
+# TODO: smalt and samtools still have hard-coded WORKDIR instructions, see below
 
 # Install dependencies
 RUN apt-get update -q &&\

@@ -18,7 +18,7 @@ RUN git clone https://github.com/wtsi-npg/p4.git p4 &&\
     tar -xf bcel.tar.gz &&\
     git clone -b 1.72 https://github.com/broadinstitute/picard.git picard &&\
     git clone -b 1.120 https://github.com/samtools/htsjdk.git picard/htsjdk &&\
-    wget -O samtools.tar.bz2 &&\
+    wget -O samtools.tar.bz2 \
     http://sourceforge.net/projects/samtools/files/samtools/1.0/samtools-1.0.tar.bz2/download &&\
     tar xjf samtools.tar.bz2
 

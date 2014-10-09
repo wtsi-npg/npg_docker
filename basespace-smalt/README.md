@@ -1,4 +1,4 @@
-### basespace-smalt
+### npg_docker-basespace-smalt
 
 ##### Description
 *This application was developed by Stefan Dang while on a summer student placement at the Wellcome Trust Sanger Institute, NPG group in August-October 2014*

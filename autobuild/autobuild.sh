@@ -4,18 +4,18 @@
 # Author: Stefan Dang <sd15@sanger.ac.uk>
 #
 # DESCRIPTION:
-#   Automatically build / download all needed binaries for full p4 flow (HiSeqX /
-#   RNA / QC) using Dockerfiles as “build recipes”. One container per binary.
+#   Automatically build / download all needed binaries for full p4 flow
+#   using Dockerfiles as “build recipes”. One container per binary.
+
+set -e
+
+# GLOBALS
+PROG=$0; shift                    # $0
+INPUT=$0; shift                   # $1 input directory on local machine
+OUTPUT=$0; shift                  # $2 output directory on local machine
 
 
-# GLOBALS ######################################################################
-
-PROG=$0                    # ARGV[0]
-INPUT=$1                  # output directory on local machine
-OUTPUT=$2
-
-# FUNCTIONS ####################################################################
-
+# FUNCTIONS
 function err {
   echo "$1" 1>&2
   exit 1
@@ -23,21 +23,18 @@ function err {
 
 function docker::build_and_run {
   dir=$(basename "$1")
-  echo -n "Trying to build sanger_npg/autobuild-$dir… "
   if [ -e "$1/Dockerfile" ]; then
-    docker build -q -t "sanger_npg/autobuild-$dir" "$1" && echo "successfully built."
+    docker build -q -t "sanger_npg/autobuild-$dir" "$1" && \
+    docker run --rm -v "$OUTPUT:/autobuild/" "sanger_npg/autobuild-$dir" && \
+    echo "sanger_npg/autobuild-$dir successfully built."
   else
-    echo "Could not build $dir. Please check if $folder/Dockerfile is present." 1>&2
+    echo "Skipped $dir: $folder/Dockerfile not present."
     return
   fi
-  echo -n "Trying to run container sanger_npg/autobuild-$dir … "
-  docker run --rm -v "$OUTPUT:/shared/" "sanger_npg/autobuild-$dir"
-  echo "done."
 }
 
 
-# MAIN #########################################################################
-
+# MAIN
 function main {
   if [ $# -le 0 ]; then
     err "USAGE: $PROG <output dir> <optional: specific targets>"

@@ -1,5 +1,8 @@
 ### npg_docker-autobuild
 
+##### Description
+*This application was developed by Stefan Dang while on a summer student placement at the Wellcome Trust Sanger Institute, NPG group in August-October 2014*
+
 ##### USAGE
 ```
 ./autobuild.sh <input directory / directories> <output directory>

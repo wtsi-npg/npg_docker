@@ -8,7 +8,7 @@ ENV smalt_version 0.7.6
 WORKDIR /home/build
 
 # Build dependency library bambamc for SAM support
-RUN git clone -b $bambamc_version https://github.com/gt1/bambamc.git bambamc &&\
+RUN git clone -b $bambamc_version https://github.com/gt1/bambamc.git bambamc
 WORKDIR ./bambamc
 RUN autoreconf -i -f &&\
     ./configure &&\

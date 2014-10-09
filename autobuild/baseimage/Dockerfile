@@ -1,19 +1,18 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Install dependencies
-RUN sudo apt-get update && \
-    sudo apt-get install -yqq \
-    git \
-    build-essential \
-    zlib1g-dev \
+RUN apt-get update -q && \
+    apt-get install -qy \
+    ant \
     autoconf \
     automake \
-    libtool \
-    pkg-config \
+    build-essential \
     default-jdk \
-    ant \
-    wget \
+    git \
+    libtool \
     libncurses5-dev \
     libncursesw5-dev \
-    libtool
+    pkg-config \
+    wget \
+    zlib1g-dev

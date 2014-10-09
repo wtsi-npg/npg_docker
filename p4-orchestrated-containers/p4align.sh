@@ -16,20 +16,17 @@
 set -o pipefail
 set -e
 
-# GLOBALS ######################################################################
+# GLOBALS
+PROG=$1
+REF=$2             # $1 Name of reference container
+TARGET=$3          # $2 Absolute path to unaligned sequence on docker host
+ALIGNER="p4align"  # Name of alignment container
 
-PROG=$0; shift            # $0
-REF=$0; shift             # $1 Name of reference container
-TARGET=$0; shift          # $2 Absolute path to unaligned sequence on docker host
-
-# Some string manipulation on globals
 TARGET_DIR=$(dirname "$TARGET")
 TARGET_FILENAME=$(basename "$TARGET")
-ALIGNER="p4align"   # Name of alignment container
 
 
-# FUNCTIONS ####################################################################
-
+# FUNCTIONS
 function err {
   echo "$1" 1>&2
   exit 1
@@ -51,23 +48,26 @@ function docker::build {
 }
 
 
-# MAIN #########################################################################
+# MAIN
+function main {
+  # Check USAGE
+  if [ $# -ne 2 ]; then
+    err "USAGE: $PROG <reference> <path to sequence>"
+  fi
 
-# Check USAGE
-if [ $# -ne 2 ]; then
-  err "USAGE: $PROG <reference> <path to sequence>"
-fi
+  # Build containers
+  docker::build "$REF"
+  docker::build "$ALIGNER"
 
-# Build containers
-docker::build "$REF"
-docker::build "$ALIGNER"
+  # Run reference container if not present. Expose folder for mounting.
+  [[ -z "$(docker ps -a | grep "\s$name\s")" ]] && \
+    docker run --name "$REF" -v "/reference" "sanger_npg/$REF"
 
-# Run reference container if not present. Expose folder for mounting.
-[[ -z "$(docker ps -a | grep "\s$name\s")" ]] && \
-  docker run --name "$REF" -v "/reference" "sanger_npg/$REF"
+  # Run p4 flow container. Mount both reference folder and host folder.
+  docker run --name "$ALIGNER_$RANDOM" --rm --volumes-from="$REF:ro" \
+    -v "$TARGET_DIR:/shared/" "sanger_npg/$ALIGNER" "$REF" "$TARGET_FILENAME"
 
-# Run p4 flow container. Mount both reference folder and host folder.
-docker run --name "$ALIGNER_$RANDOM" --rm --volumes-from="$REF:ro" \
-  -v "$TARGET_DIR:/shared/" "sanger_npg/$ALIGNER" "$REF" "$TARGET_FILENAME"
+  exit 0
+}
 
-exit 0
+main "$@"

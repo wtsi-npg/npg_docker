@@ -22,6 +22,7 @@ RUN apt-get update -q &&\
                         automake \
                         git \
                         gnuplot \
+                        openjdk-7-jdk \
                         libtool \
                         libncurses5-dev \
                         libncursesw5-dev \

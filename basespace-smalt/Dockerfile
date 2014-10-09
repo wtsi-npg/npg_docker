@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Bioinformatics Tools Versions
@@ -10,18 +10,18 @@ ENV libmaus_version libmaus_experimental_0_0_153
 ENV biobambam_version biobambam_experimental_0_0_163
 
 # Install dependencies
-RUN sudo apt-get update &&\
-    sudo apt-get install -yqq build-essential \
-                              zlib1g-dev \
-                              autoconf \
-                              automake \
-                              libtool \
-                              pkg-config \
-                              libncurses5-dev \
-                              libncursesw5-dev \
-                              git \
-                              wget \
-                              gnuplot
+RUN apt-get update -q &&\
+    apt-get install -qy build-essential \
+                        autoconf \
+                        automake \
+                        git \
+                        gnuplot \
+                        libtool \
+                        libncurses5-dev \
+                        libncursesw5-dev \
+                        pkg-config \
+                        wget \
+                        zlib1g-dev
 
 
 # Build bioinformatics tools in /home:
@@ -60,8 +60,7 @@ RUN autoreconf -i -f &&\
 WORKDIR ..
 
 # Build samtools
-RUN wget -qO- http://sourceforge.net/projects/samtools/files/samtools/$samtools_version/\
-    samtools-$samtools_version.tar.bz2/download | tar -xzj
+RUN wget -qO- http://sourceforge.net/projects/samtools/files/samtools/$samtools_version/samtools-$samtools_version.tar.bz2/download | tar -xj
 # TODO: Use env variable as soon as docker 1.3 is released
 WORKDIR ./samtools-1.1
 RUN make && make install

@@ -12,7 +12,7 @@ RUN git clone -b $picard_version https://github.com/broadinstitute/picard.git pi
     git clone -b $htsjdk_version https://github.com/samtools/htsjdk.git picard/htsjdk
 WORKDIR ./picard/
 RUN ant -lib lib/ant package-commands
-WORKDIR
+WORKDIR ..
 
 # Copy
 RUN echo "#!/bin/bash\nmkdir /autobuild/picard && cp -r home/build/picard/dist/* \

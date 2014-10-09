@@ -1,45 +1,54 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
+
+ENV teepot_version 1.0.1
+ENV libmaus_version libmaus_experimental_0_0_164
+
+
 # Install dependencies
-RUN sudo apt-get update --fix-missing &&\
-    sudo apt-get install -yqq \
-    mbuffer \
-    default-jre \
-    staden-io-lib-utils \
-    git \
-    build-essential \
-    zlib1g-dev \
+RUN apt-get update -q --fix-missing &&\
+    apt-get install -yq \
     autoconf \
     automake \
+    build-essential \
+    default-jre \
+    git \
     libtool \
-    pkg-config
+    mbuffer \
+    pkg-config \
+    staden-io-lib-utils \
+    zlib1g-dev
 
-# Download sources
+
 WORKDIR /home
-RUN git clone https://github.com/wtsi-npg/p4.git p4 &&\
-    git clone -b 1.0.1 https://github.com/wtsi-npg/teepot.git teepot &&\
-    git clone -b libmaus_experimental_0_0_164 https://github.com/gt1/libmaus.git libmaus
 
 
 # Build libmaus
+RUN git clone -b $libmaus_version https://github.com/gt1/libmaus.git libmaus
 WORKDIR ./libmaus
 RUN autoreconf -i -f && ./configure &&\
     make && make install
+WORKDIR ..
 
+# Build teepot
+RUN git clone -b $teepot_version https://github.com/wtsi-npg/teepot.git teepot
 WORKDIR ../teepot
 RUN autoreconf -i -f && ./configure &&\
     make && make install
+WORKDIR ..
 
 # Build p4
-WORKDIR ../p4/
+RUN git clone https://github.com/wtsi-npg/p4.git p4
+WORKDIR ./p4/
 RUN perl ./Build.PL &&\
     ./Build installdeps &&\
     chmod +x ./bin/* &&\
     cp ./bin/* /usr/local/bin
+WORKDIR ..
 
 # Cleanup
-RUN sudo apt-get remove -yqq \
+RUN apt-get remove -yqq \
     git \
     build-essential \
     zlib1g-dev \
@@ -50,13 +59,13 @@ RUN sudo apt-get remove -yqq \
     sudo apt-get -y autoremove && \
     sudo apt-get clean
 
-# Add binaries / jars, see npg_autobuild for build recipes
-ADD ./bin /usr/local/bin
-ADD ./jar /software/npg/java_jars/
+# Add binaries / jars, see ../autobuild for build recipes
+COPY ./bin /usr/local/bin
+COPY ./jar /software/npg/java_jars/
 
 # p4 Entrypoint and test configuration file
 WORKDIR ../../
-ADD ./p4_entrypoint.sh /p4_entrypoint.sh
+COPY ./p4_entrypoint.sh /p4_entrypoint.sh
 RUN chmod +x p4_entrypoint.sh
 ENTRYPOINT ["./p4_entrypoint.sh"]
 CMD ["bash"]

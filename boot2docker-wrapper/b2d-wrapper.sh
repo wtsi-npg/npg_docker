@@ -17,10 +17,10 @@ set -e
 
 
 # GLOBALS ######################################################################
-PROG=$0; shift          # $0
-INPUT_DIR=$0; shift     # $1
-OUTPUT_DIR=$0; shift    # $2
-IMAGE=$0; shift         # $4
+PROG=$0
+INPUT_DIR=$1
+OUTPUT_DIR=$2
+IMAGE=$3
 DUID="$IMAGE_$RANDOM"   # Unique ID to avoid multithreading conflicts
 
 # B2D_fileIO

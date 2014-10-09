@@ -21,7 +21,8 @@ b2d-wrapper.sh <input> <output> <docker image> <optional: args for ENTRYPOINT / 
 ```
 This was tested with Docker 1.2 and boot2docker 1.2 on a machine running OS X 10.9.4.
 
-#### Two better solutions to consider before using this script
+#### Three better solutions to consider before using this script
 To my knowledge there are two better ways to solve this problem. Both solutions mount a folder from the local machine, which can again be mounted by any docker containers. #inception
 - [Modifiy the boot2docker VM](https://medium.com/boot2docker-lightweight-linux-for-docker/boot2docker-together-with-virtualbox-guest-additions-da1e3ab2465c) to contain guest additions from local host.
 - Skip b2d, run Docker [inside Linux VM instead](http://cjlarose.com/2014/03/08/run-docker-with-vagrant.html).
+- For simple tests, consider just manually copying files to the VM and leave them there: `scp -P 2022 docker@localhost`

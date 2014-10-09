@@ -22,10 +22,10 @@ RUN apt-get update -q &&\
                         automake \
                         git \
                         gnuplot \
-                        openjdk-7-jdk \
                         libtool \
                         libncurses5-dev \
                         libncursesw5-dev \
+                        openjdk-7-jdk \
                         pkg-config \
                         staden-io-lib-utils \
                         wget \

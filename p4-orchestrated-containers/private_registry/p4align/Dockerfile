@@ -5,7 +5,9 @@ ENV bwa_version 0.7.8
 
 
 RUN apt-get update -q --fix-missing &&\
-    apt-get install -yqq make zlib1g-dev git
+    apt-get install -yqq build-essential \
+                         git \
+                         zlib1g-dev
 
 
 WORKDIR /home

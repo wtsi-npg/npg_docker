@@ -24,7 +24,7 @@ COUNTER=0                         # Make sure alignment has run at least once
 [[ -z "$INDEX_WORDLEN" ]] && INDEX_WORDLEN="13"
 [[ -z "$INDEX_STEPSIZE" ]] && INDEX_STEPSIZE="$INDEX_WORDLEN"
 [[ -z "$INSERT_MAX" ]] && INSERT_MAX="500"
-[[ -z "$INSERT_MIN" ]] &&  INSERT_MIN="0"
+[[ -z "$INSERT_MIN" ]] && INSERT_MIN="0"
 
 # Indexing
 smalt index -k "$INDEX_WORDLEN" -s "$INDEX_STEPSIZE" "$INDEX" "$INDEX.fa"
@@ -77,6 +77,14 @@ for input_file in /data/input/samples/*/*; do
     # Plot stats
     plot-bamstats "$output_file.stats" \
    -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$filename"
+
+# Output used binary / library versions (also in bam header)
+echo "bambamc: $bambamc_version\
+smalt: $smalt_version\
+samtools: $samtools_version\
+libmaus: $libmaus_version\
+biobambam: $biobambam_version"\
+>> pipeline_version.txt
 
     # Tidy up
     rm postproc_pipe input.fastq

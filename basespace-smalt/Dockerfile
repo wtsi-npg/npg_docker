@@ -56,7 +56,7 @@ RUN git clone -b $biobambam_version https://github.com/gt1/biobambam.git biobamb
 WORKDIR ./biobambam
 RUN autoreconf -i -f &&\
     ./configure --with-libmaus=${LIBMAUSPREFIX} --prefix=${HOME}/biobambam &&\
-    make && make install
+    make && make install && cp /root/biobambam/bin/* /usr/bin/
 WORKDIR ..
 
 # Build samtools

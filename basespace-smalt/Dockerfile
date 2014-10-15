@@ -1,27 +1,28 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Bioinformatics Tools Versions
 ENV bambamc_version 0.0.50-release-20140430085950
 ENV smalt_version 0.7.6
 ENV samtools_version 1.1
-ENV libmaus_version libmaus-0.0.74-release-20131002160334
-ENV biobambam_version 0.0.168-release-20141013091820
+ENV libmaus_version 0.0.168-release-20141013091820
+ENV biobambam_version 0.0.172-release-20141013093121
 # TODO: smalt and samtools still have hard-coded WORKDIR instructions, see below
 
 # Install dependencies
-RUN apt-get update -q &&\
-    apt-get install -qy build-essential \
-                        autoconf \
-                        automake \
-                        git \
-                        gnuplot \
-                        libtool \
-                        libncurses5-dev \
-                        libncursesw5-dev \
-                        pkg-config \
-                        wget \
-                        zlib1g-dev
+RUN sudo apt-get update -q &&\
+    sudo apt-get install -qy \
+      build-essential \
+      autoconf \
+      automake \
+      git \
+      gnuplot \
+      libtool \
+      libncurses5-dev \
+      libncursesw5-dev \
+      pkg-config \
+      wget \
+      zlib1g-dev
 
 
 # Build bioinformatics tools in /home:
@@ -69,7 +70,9 @@ WORKDIR ..
 
 # Setting up environment for running on BaseSpace
 ENV LD_LIBRARY_PATH LD_LIBRARY_PATH:/usr/local/lib
+# TODO: Remove in final Dockerfile as iGenomes will be available
 COPY ./references /references
+# Add entrypoint script
 COPY ./smalt_entrypoint.sh /smalt_entrypoint.sh
 RUN chmod +x /smalt_entrypoint.sh
 WORKDIR ../../

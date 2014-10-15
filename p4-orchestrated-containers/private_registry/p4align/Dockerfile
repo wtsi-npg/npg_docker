@@ -1,12 +1,13 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 ENV bwa_version 0.7.8
 
-RUN apt-get update -q --fix-missing &&\
-    apt-get install -yqq build-essential \
-                         git \
-                         zlib1g-dev
+RUN sudo apt-get update -q --fix-missing &&\
+    sudo apt-get install -yqq \
+      build-essential \
+      git \
+      zlib1g-dev
 
 WORKDIR /home
 

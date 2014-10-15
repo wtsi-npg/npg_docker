@@ -1,9 +1,9 @@
-FROM debian:jessie
+FROM ubuntu:12.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 
 ENV teepot_version 1.0.1
-ENV libmaus_version libmaus_experimental_0_0_164
+ENV libmaus_version 0.0.168-release-20141013091820
 
 
 # Install dependencies

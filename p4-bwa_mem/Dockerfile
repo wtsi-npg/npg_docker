@@ -1,10 +1,10 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 
 ENV teepot_version 1.0.1
-ENV libmaus_version libmaus_experimental_0_0_153
-ENV biobambam_version biobambam_experimental_0_0_163
+ENV libmaus_version 0.0.168-release-20141013091820
+ENV biobambam_version 0.0.172-release-20141013093121
 ENV bwa_version 0.7.8
 ENV illumina2bam_version V1.16
 ENV bcel_version 5.2
@@ -15,21 +15,22 @@ ENV samtools_version 1.1
 
 
 # Install dependencies
-RUN apt-get update -q &&\
-    apt-get install -qy build-essential \
-                        ant \
-                        autoconf \
-                        automake \
-                        git \
-                        gnuplot \
-                        libtool \
-                        libncurses5-dev \
-                        libncursesw5-dev \
-                        openjdk-7-jdk \
-                        pkg-config \
-                        staden-io-lib-utils \
-                        wget \
-                        zlib1g-dev
+RUN sudo apt-get update -q &&\
+    sudo apt-get install -qy \
+      build-essential \
+      ant \
+      autoconf \
+      automake \
+      git \
+      gnuplot \
+      libtool \
+      libncurses5-dev \
+      libncursesw5-dev \
+      openjdk-7-jdk \
+      pkg-config \
+      staden-io-lib-utils \
+      wget \
+      zlib1g-dev
 
 
 # Build libmaus

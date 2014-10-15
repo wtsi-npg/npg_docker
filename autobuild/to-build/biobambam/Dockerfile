@@ -2,8 +2,8 @@ FROM sanger_npg/autobuild-baseimage
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Dependencies: git build-essential zlib1g-dev autoconf automake libtool pkg-config
-ENV libmaus_version libmaus_experimental_0_0_153
-ENV biobambam_version biobambam_experimental_0_0_163
+ENV libmaus_version 0.0.168-release-20141013091820
+ENV biobambam_version 0.0.172-release-20141013093121
 
 WORKDIR /home/build/
 

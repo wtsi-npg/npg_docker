@@ -10,16 +10,14 @@ WORKDIR /home/build/
 # Build libmaus
 RUN git clone -b $libmaus_version https://github.com/gt1/libmaus.git libmaus
 WORKDIR ./libmaus
-RUN autoreconf -i -f && ./configure &&\
-    make && make install
+RUN autoreconf -i -f && ./configure && make && make install
 WORKDIR ..
 
 # Build biobambam
 RUN git clone -b $biobambam_version https://github.com/gt1/biobambam.git biobambam
 WORKDIR ./biobambam
 RUN autoreconf -i -f &&\
-    ./configure --with-libmaus=${LIBMAUSPREFIX} --prefix=${HOME}/biobambam &&\
-    make && make install
+    ./configure && make && make install
 WORKDIR ..
 
 # Copy binaries to mounted folder, when container is run

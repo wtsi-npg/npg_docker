@@ -1,9 +1,9 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Install dependencies
-RUN sudo apt-get update -q && \
-    sudo apt-get install -qy \
+RUN apt-get update -q && \
+    apt-get install -qy \
       ant \
       autoconf \
       automake \

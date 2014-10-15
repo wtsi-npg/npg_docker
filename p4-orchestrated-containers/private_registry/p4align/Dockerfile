@@ -1,10 +1,10 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 ENV bwa_version 0.7.8
 
-RUN sudo apt-get update -q --fix-missing &&\
-    sudo apt-get install -yqq \
+RUN apt-get update -q --fix-missing &&\
+    apt-get install -yqq \
       build-essential \
       git \
       zlib1g-dev

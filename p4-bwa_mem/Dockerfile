@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 
@@ -36,23 +36,20 @@ RUN sudo apt-get update -q &&\
 # Build libmaus
 RUN git clone -b $libmaus_version https://github.com/gt1/libmaus.git libmaus
 WORKDIR ./libmaus
-RUN autoreconf -i -f && ./configure &&\
-    make && make install
+RUN autoreconf -i -f && ./configure && make && make install
 WORKDIR ..
 
 # Build biobambam
 RUN git clone -b $biobambam_version https://github.com/gt1/biobambam.git biobambam
 WORKDIR ./biobambam
 RUN autoreconf -i -f &&\
-    ./configure --with-libmaus=${LIBMAUSPREFIX} --prefix=${HOME}/biobambam &&\
-    make && make install
+    ./configure && make && make install
 WORKDIR ..
 
 # Build teepot
 RUN git clone -b $teepot_version https://github.com/wtsi-npg/teepot.git teepot
 WORKDIR ./teepot
-RUN autoreconf -i -f && ./configure &&\
-    make && make install
+RUN autoreconf -i -f && ./configure && make && make install
 WORKDIR ..
 
 # Build bwa

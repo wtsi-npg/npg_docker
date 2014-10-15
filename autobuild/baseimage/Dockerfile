@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM ubuntu:12.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Install dependencies

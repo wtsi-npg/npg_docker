@@ -1,17 +1,14 @@
-FROM debian:jessie
+FROM ubuntu:12.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 ENV bwa_version 0.7.8
-
 
 RUN apt-get update -q --fix-missing &&\
     apt-get install -yqq build-essential \
                          git \
                          zlib1g-dev
 
-
 WORKDIR /home
-
 
 # Build bwa
 RUN git clone -b $bwa_version https://github.com/lh3/bwa.git bwa
@@ -29,7 +26,7 @@ RUN perl ./Build.PL &&\
 WORKDIR ..
 
 
-# Add binaries and entrypoint script
+# Add configuration & entrypoint script
 WORKDIR ..
 COPY ./p4_entrypoint.sh /p4_entrypoint.sh
 RUN chmod +x p4_entrypoint.sh

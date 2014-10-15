@@ -1,12 +1,12 @@
-FROM debian:jessie
+FROM ubuntu:12.04
 MAINTAINER Stefan Dang <sd15@sanger.ac.uk>
 
 # Bioinformatics Tools Versions
 ENV bambamc_version 0.0.50-release-20140430085950
 ENV smalt_version 0.7.6
 ENV samtools_version 1.1
-ENV libmaus_version libmaus_experimental_0_0_153
-ENV biobambam_version biobambam_experimental_0_0_163
+ENV libmaus_version libmaus-0.0.74-release-20131002160334
+ENV biobambam_version 0.0.168-release-20141013091820
 # TODO: smalt and samtools still have hard-coded WORKDIR instructions, see below
 
 # Install dependencies
@@ -56,7 +56,7 @@ RUN git clone -b $biobambam_version https://github.com/gt1/biobambam.git biobamb
 WORKDIR ./biobambam
 RUN autoreconf -i -f &&\
     ./configure --with-libmaus=${LIBMAUSPREFIX} --prefix=${HOME}/biobambam &&\
-    make && make install && cp /root/biobambam/bin/* /usr/bin/
+    make && make install
 WORKDIR ..
 
 # Build samtools

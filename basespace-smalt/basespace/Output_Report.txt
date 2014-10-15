@@ -10,42 +10,46 @@
 
 <body>
 <div class="container-fluid" style="margin-top:100px">
-    <div class="row-fluid">
-        <span class="col-span-12">
-            <h2>samtools flagstats</h2>
+
+    <!-- Text -->
+    <span class="col-span-12">
+        <!-- Flagstats -->
+        <div class="col-md-6">
+            <h2 class="bs-section-heading">Flagstats</h2>
 
             {% for key in result.files %}
-                {% if key contains '.flagstats' %}
-                    <code>{% assign name = result.files[key].csv.parse %}</code>
+                {% if key contains '.flagstat' %}
+                    <pre>{{ result.files[key].content }}</pre>
                 {% endif %}
             {% endfor %}
-        </span>
-        <span class="col-span-12">
-        <h2>plot-bamstats metrics</h2>
+        </div>
+        <!-- Versions -->
+        <div class="col-md-6">
+            <h2 class="bs-section-heading">Bioinformatic Tools used in pipeline</h2>
 
             {% for key in result.files %}
-                {% if key contains '.png' %}
-                    {% assign name = result.files[key] %}
-                    {% assign image = result.files[key].href %}
-                    <h3>{{name}}</h3>
-                    <div class="row-fluid">
-                        <span class="col-span-12">
-                                <img src="{{image}}"></img>
-                        </span>
-                    </div>
+                {% if key contains 'pipeline_version.txt' %}
+                    <pre>{{ result.files[key].content }}</pre>
                 {% endif %}
             {% endfor %}
+        </div>
+    </span>
 
-        </span>
-  </div>
+    <!-- Plots IMG -->
+    <span class="col-span-12">
+        <h2 class="bs-section-heading">Plot Flagstats</h2>
+        {% for key in result.files %}
+            {% if key contains '.png' %}
+            <div class="col-md-6">
+                <h4>{{ key | replace:'.*001-(.*).png','$1' | replace:'-',' ' }}</h4>
+                <img src="{{ result.files[key].href }}"></img>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </span>
 </div>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script>
-
-
-
-</script>
-<!-- <script src="https://basespace-cdn-public-east.s3.amazonaws.com/libraries/d3/d3.v3.min.js"></script> -->
 </body>
 </html>

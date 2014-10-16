@@ -1,0 +1,17 @@
+# Name
+smalt Alignment
+
+# Company or Organization Name
+Wellcome Trust Sanger Institute
+
+# Short Description
+SMALT aligns DNA sequencing reads with a reference genome.
+
+# Long Description
+This smalt pipeline performs the smalt alignment and post-processing (stats, flagstats, mark duplicates) of the resulting bam file. The metrics will be displayed in the report.
+
+The smalt aligner employs a hash index of short words of up to 20
+nucleotides sampled at equidistant steps along the reference genome.
+For each sequencing read, potentially matching segments in the
+reference genome are identified from seed matches in the index and
+subsequently aligned with the read using dynamic programming.

@@ -18,7 +18,7 @@ INDEX_WORDLEN=$1; shift           # $3
 INDEX_STEPSIZE=$1; shift          # $4
 INSERT_MAX=$1; shift              # $5
 INSERT_MIN=$1; shift              # $6
-COUNTER=0                         # Make sure alignment has run at least once
+COMPLETED=0                       # Make sure alignment has run at least once
 
 # Catch empty input, set to standard values
 [[ -z "$INDEX_WORDLEN" ]] && INDEX_WORDLEN="13"
@@ -76,27 +76,27 @@ for input_file in /data/input/samples/*/*; do
 
     # Plot stats
     plot-bamstats "$output_file.stats" \
-   -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$filename"
+      -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$filename"
 
 # Output used binary / library versions (also in bam header)
-echo "bambamc: $bambamc_version\
-smalt: $smalt_version\
-samtools: $samtools_version\
-libmaus: $libmaus_version\
-biobambam: $biobambam_version"\
->> pipeline_version.txt
+echo -e "bambamc: $bambamc_version\n\
+smalt: $smalt_version\n\
+samtools: $samtools_version\n\
+libmaus: $libmaus_version\n\
+biobambam: $biobambam_version\n"\
+> "$output_file.versions"
 
     # Tidy up
     rm postproc_pipe input.fastq
     [[ -e "$mate" ]] && rm "$mate"
 
-    ((COUNTER++))
+    COMPLETED=1
   fi
 
 done
 
 # Make sure loop has run at least once
-[[ $COUNTER == 0 ]] && err "No alignment has been performed. Please choose \
+[[ $COMPLETED == 0 ]] && err "No alignment has been performed. Please choose \
   compatible fastq.gz input samples"
 
 exit 0

@@ -6,6 +6,7 @@ if [ "$1" == "bash" ]; then
 else
   # The real entrypoint
   # /shared and / reference will be mounted by the container
+  mkdir -p /shared/output
   viv.pl -s -x -v3 -o "/shared/output/viv_$2.log" <(vtfp.pl -l "/shared/output/vtpf_$2.log" \
     -keys index_input -vals "/reference/$1.fa" \
     -keys fastq_input -vals "/shared/$2" \

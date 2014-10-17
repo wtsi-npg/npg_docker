@@ -15,9 +15,9 @@
 function docker::build {
   dir=$(basename "$1")
   if [ -e "$1/Dockerfile" ]; then
-    docker build -q -t "localhost:$REGISTRY_PORT/autobuild-$dir" "$1" && \
-    docker push "localhost:$REGISTRY_PORT/autobuild-$dir" && \
-    echo "sanger_npg/autobuild-$dir successfully pushed."
+    docker build -q -t "localhost:$REGISTRY_PORT/$dir" "$1" && \
+    docker push "localhost:$REGISTRY_PORT/$dir" && \
+    echo "sanger_npg/$dir successfully pushed."
   else
     echo "$dir skipped: $folder/Dockerfile not present."
   fi

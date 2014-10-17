@@ -14,7 +14,7 @@ WORKDIR /home
 # Build bwa
 RUN git clone -b $bwa_version https://github.com/lh3/bwa.git bwa
 WORKDIR ./bwa
-RUN make
+RUN make && cp bwa /usr/local/bin
 WORKDIR ..
 
 # Build p4

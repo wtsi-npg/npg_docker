@@ -55,9 +55,11 @@ function main {
 
   # Pull images if not present
   docker::pull "localhost:$REGISTRY_PORT/$REF" || \
-    err "Could not pull image. Please set up registry. See: ./private_registry/setup.sh"
+    err "Could not pull localhost:$REGISTRY_PORT/$REF. Please set up registry.\
+    See: ./private_registry/setup.sh"
   docker::pull "localhost:$REGISTRY_PORT/$ALIGNER" || \
-    err "Could not pull image. Please set up registry. See: ./private_registry/setup.sh"
+    err "Could not pull localhost:$REGISTRY_PORT/$ALIGNER. Please set up registry.\
+    See: ./private_registry/setup.sh"
 
   # Run reference container if not present. Expose folder for mounting.
   [[ -z "$(docker ps -a | grep "\s$REF\s")" ]] && \

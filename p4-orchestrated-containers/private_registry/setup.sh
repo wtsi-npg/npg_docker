@@ -10,6 +10,9 @@
 #
 # Maintainer: Stefan Dang <sd15@sanger.ac.uk>
 
+# Globals
+REGISTRY_PORT=5000
+
 # Builds an image if Dockerfile present
 # $1: Directory containing Dockerfile
 function docker::build {
@@ -27,7 +30,18 @@ function docker::build {
 function docker::setup_registry {
     echo "Setting up private repository on port $REGISTRY_PORT:"
     docker run --name sanger_registry -d -p $REGISTRY_PORT:5000 registry
-    for folder in ./private_registry/*; do
-      docker::build "$folder"
-    done
 }
+
+function main {
+  # Setup registry if not already running
+  if [ -z "$(docker ps | grep sanger_registry)" ]; then
+    docker::setup_registry
+  fi
+
+  # Build images and push to registry
+  for folder in ./private_registry/*; do
+    docker::build "$folder"
+  done
+}
+
+main "$@"

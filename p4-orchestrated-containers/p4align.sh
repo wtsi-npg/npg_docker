@@ -48,15 +48,16 @@ function main {
     err "USAGE: $PROG <reference> <path to sequence>"
   fi
 
-  # Load functions and set up registry, if not present
+  # Check for registry
   if [ -z "$(docker ps | grep sanger_registry)" ]; then
-    source ./private_registry/setup_private_repo.sh
-    docker::setup_registry
+    err "Registry is not running. Please set up. See: ./private_registry/setup.sh"
   fi
 
   # Pull images if not present
-  docker::pull "localhost:$REGISTRY_PORT/$REF"
-  docker::pull "localhost:$REGISTRY_PORT/$ALIGNER"
+  docker::pull "localhost:$REGISTRY_PORT/$REF" || \
+    err "Could not pull image. Please set up registry. See: ./private_registry/setup.sh"
+  docker::pull "localhost:$REGISTRY_PORT/$ALIGNER" || \
+    err "Could not pull image. Please set up registry. See: ./private_registry/setup.sh"
 
   # Run reference container if not present. Expose folder for mounting.
   [[ -z "$(docker ps -a | grep "\s$REF\s")" ]] && \

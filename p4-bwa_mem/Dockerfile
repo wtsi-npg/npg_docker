@@ -43,8 +43,7 @@ WORKDIR ..
 # Build biobambam
 RUN git clone -b $biobambam_version https://github.com/gt1/biobambam.git biobambam
 WORKDIR ./biobambam
-RUN autoreconf -i -f &&\
-    ./configure && make && make install
+RUN autoreconf -i -f && ./configure && make && make install
 WORKDIR ..
 
 # Build teepot
@@ -56,7 +55,7 @@ WORKDIR ..
 # Build bwa
 RUN git clone -b $bwa_version https://github.com/lh3/bwa.git bwa
 WORKDIR ./bwa
-RUN make
+RUN make && cp bwa /usr/local/bin/bwa
 WORKDIR ..
 
 # Build illumina2bam
@@ -80,7 +79,7 @@ RUN wget -qO- \
     http://sourceforge.net/projects/samtools/files/samtools/$samtools_version/samtools-$samtools_version.tar.bz2/download \
     | tar -xj
 WORKDIR ./samtools-$samtools_version
-RUN make
+RUN make && make install
 WORKDIR ..
 
 # Build p4

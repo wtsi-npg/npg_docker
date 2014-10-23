@@ -88,3 +88,8 @@ WORKDIR ./p4/
 RUN perl ./Build.PL && ./Build installdeps && ./Build install
 WORKDIR ..
 
+# Point to lib for dynamically linked binaries
+RUN ldconfig
+# Install java jars for p4 flow
+RUN mkdir -p /usr/local/jars && mv /illumina2bam/dist/* /usr/local/jars/ &&\
+    mv /picard/dist/* /usr/local/jars

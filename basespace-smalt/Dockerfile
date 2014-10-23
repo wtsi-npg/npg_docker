@@ -22,8 +22,6 @@ ENV smalt_version 0.7.6
 ENV samtools_version 1.1
 ENV libmaus_version 0.0.167-release-20140917101853
 ENV biobambam_version 0.0.171-release-20140917102804
-# TODO: smalt and samtools use cd instead of WORKDIR to propagate ENV properly
-#       Docker 1.3 will have environment variable support for WORKDIR
 
 
 # Build bambamc lib (for smalt bam support)
@@ -36,9 +34,9 @@ WORKDIR ..
 RUN wget -O smalt.tar.gz \
     http://sourceforge.net/projects/smalt/files/smalt-$smalt_version.tar.gz/download &&\
     tar -xf smalt.tar.gz
-#WORKDIR ./smalt-$smalt-version
-RUN cd smalt-$smalt_version && ./configure && make && make install
-#WORKDIR ..
+WORKDIR ./smalt-$smalt-version
+RUN ./configure && make && make install
+WORKDIR ..
 
 # Build libmaus
 RUN git clone -b $libmaus_version https://github.com/gt1/libmaus.git libmaus
@@ -56,9 +54,9 @@ WORKDIR ..
 RUN wget -O samtools.tar.bz2 \
     http://sourceforge.net/projects/samtools/files/samtools/1.1/samtools-1.1.tar.bz2/download &&\
     tar -xjf samtools.tar.bz2
-#WORKDIR ./samtools-$samtools_version
-RUN cd samtools-$samtools_version && make && make install
-#WORKDIR ..
+WORKDIR ./samtools-$samtools_version
+RUN make && make install
+WORKDIR ..
 
 
 # Setting up environment for running on BaseSpace

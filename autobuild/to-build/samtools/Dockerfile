@@ -10,8 +10,7 @@ WORKDIR /home/build/
 RUN wget -qO- \
     http://sourceforge.net/projects/samtools/files/samtools/$samtools_version/samtools-$samtools_version.tar.bz2/download \
     | tar -xjz
-# TODO: Use env variable as soon as docker 1.3 is released
-WORKDIR ./samtools-1.1
+WORKDIR ./samtools-$samtools_version
 RUN make
 WORKDIR ..
 

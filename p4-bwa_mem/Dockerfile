@@ -11,7 +11,8 @@ ENV bcel_version 5.2
 ENV picard_version 1.72
 ENV htsjdk_version 1.120
 ENV samtools_version 1.1
-# TODO: Add p4 version, staying on most recent version for development for now
+# Staying on most recent p4 version for now
+ENV p4_branch devel
 
 
 # Install dependencies
@@ -64,7 +65,7 @@ RUN git clone -b $illumina2bam_version https://github.com/wtsi-npg/illumina2bam.
     wget -qO- http://supergsego.com/apache//commons/bcel/binaries/bcel-$bcel_version.tar.gz \
       | tar -xz
 WORKDIR ./illumina2bam/
-RUN export CLASSPATH=/home/build/bcel-5.2/bcel-5.2.jar && ant jar
+RUN export CLASSPATH=/bcel-5.2/bcel-5.2.jar && ant jar
 WORKDIR ..
 
 # Build picard with htsjdk
@@ -77,18 +78,14 @@ WORKDIR ..
 # Build samtools
 RUN wget -qO- \
     http://sourceforge.net/projects/samtools/files/samtools/$samtools_version/samtools-$samtools_version.tar.bz2/download \
-    | tar -xjz
-# TODO: Use env variable as soon as docker 1.3 is released
-WORKDIR ./samtools-1.1
+    | tar -xj
+WORKDIR ./samtools-$samtools_version
 RUN make
 WORKDIR ..
 
 # Build p4
-RUN git clone https://github.com/wtsi-npg/p4.git p4
+RUN git clone -b $p4_branch https://github.com/wtsi-npg/p4.git p4
 WORKDIR ./p4/
-RUN perl ./Build.PL &&\
-    ./Build installdeps &&\
-    chmod +x ./bin/* &&\
-    cp ./bin/* /usr/local/bin
+RUN perl ./Build.PL && ./Build installdeps && ./Build install
 WORKDIR ..
 

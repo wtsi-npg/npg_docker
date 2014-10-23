@@ -20,8 +20,7 @@ WORKDIR ..
 # Build smalt
 RUN wget -qO- smalt.tar.gz http://sourceforge.net/projects/smalt/files/smalt-$smalt_version.tar.gz/download \
     | tar -xz
-# TODO: Use env variable as soon as docker 1.3 is released
-WORKDIR ./smalt-0.7.6
+WORKDIR ./smalt-$smalt_version
 RUN ./configure &&\
     make && \
     make install

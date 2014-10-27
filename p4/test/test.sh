@@ -17,6 +17,10 @@ tmp_dir=$test_dir/tmpdata
 err_dir=$test_dir/errdata
 rpt=12588_1
 
+function download_testinput {
+  wget -qO- ftp://ngs.sanger.ac.uk/production/dnap/npg/p4_docker_1.tar.gz | tar -xz
+}
+
 function run_flow {
   # create subdirectories
   mkdir -p $test_dir $vtf_dir $out_dir $cfg_dir $tmp_dir $err_dir
@@ -61,8 +65,6 @@ function run_flow {
   # run flow
   viv.pl -x -s -v 3 -o tmp/gawp.log tmp/gawp.json
   mv ./*.err $err_dir/
-
-  return 0
 }
 
 function compare_results {
@@ -73,15 +75,14 @@ function compare_results {
   cmp $expected_output/12588_1.flagstat $out_dir/$rpt.flagstat
   cmp $expected_output/12588_1_phix.bamstats $out_dir/"$rpt"_phix.bamstats
   cmp $expected_output/12588_1_phix.flagstat $out_dir/"$rpt"_phix.flagstat
-
-  return 0
 }
 
 function main {
+  download_testinput
   run_flow
   compare_results
 
-  return 0
+  exit 0
 }
 
 main

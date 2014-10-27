@@ -93,3 +93,5 @@ RUN ldconfig
 # Install java jars for p4 flow
 RUN mkdir -p /usr/local/jars && mv /illumina2bam/dist/* /usr/local/jars/ &&\
     mv /picard/dist/* /usr/local/jars
+# Copy testscript
+COPY ./test /test

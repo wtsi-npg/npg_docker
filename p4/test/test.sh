@@ -6,8 +6,6 @@
 # Copyright (c) 2014 Genome Research Ltd.
 # Author: Stefan Dang <sd15@sanger.ac.uk>
 
-set -e
-
 # globals
 p4_templates=./p4_templates
 expected_output=./expected_output
@@ -56,7 +54,7 @@ function run_flow {
   -keys picard_dict_name_phix -vals PhiX/phix_unsnipped_short_no_N.fa.dict \
   -keys refname_fasta_target -vals Escherichia_coli/E_coli_B_strain.fasta \
   -keys refname_fasta_phix -vals PhiX/phix_unsnipped_short_no_N.fa \
-  -keys aligner_numthreads -vals "$(nproc)" \
+  -keys aligner_numthreads -vals 2 \
   -keys java_cmd -vals java \
   <(grep -v "^#" $vtf_dir/generic_alignment_with_phix.vtf | sed -e "s/^ *//" | tr -d "\n\t")
 
@@ -69,7 +67,8 @@ function run_flow {
 
 function compare_results {
   cmp $expected_output/12588_1.bam.md5 $out_dir/$rpt.bam.md5
-  cmp $expected_output/12588_1.bamseqchecksum $out_dir/$rpt.bamseqchecksum
+  cmp $expected_output/12588_1_in.bamseqchecksum $out_dir/"$rpt"_in.bamseqchecksum
+  cmp $expected_output/12588_1_out.bamseqchecksum $out_dir/"$rpt"_out.bamseqchecksum
   cmp $expected_output/12588_1.bamstats $out_dir/$rpt.bamstats
   cmp $expected_output/12588_1.flagstat $out_dir/$rpt.flagstat
   cmp $expected_output/12588_1_phix.bamstats $out_dir/"$rpt"_phix.bamstats

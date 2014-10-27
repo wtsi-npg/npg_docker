@@ -34,7 +34,7 @@ WORKDIR ..
 RUN wget -O smalt.tar.gz \
     http://sourceforge.net/projects/smalt/files/smalt-$smalt_version.tar.gz/download &&\
     tar -xf smalt.tar.gz
-WORKDIR ./smalt-$smalt-version
+WORKDIR ./smalt-$smalt_version
 RUN ./configure && make && make install
 WORKDIR ..
 
@@ -61,9 +61,8 @@ WORKDIR ..
 
 # Setting up environment for running on BaseSpace
 ENV LD_LIBRARY_PATH LD_LIBRARY_PATH:/usr/local/lib
-# TODO: Remove in production as iGenomes will become available
-ADD ./references /references
-ADD ./smalt_entrypoint.sh /smalt_entrypoint.sh
+COPY ./test /test
+COPY ./smalt_entrypoint.sh /smalt_entrypoint.sh
 RUN chmod +x /smalt_entrypoint.sh
 WORKDIR ../../../
 CMD ["/smalt_entrypoint.sh"]

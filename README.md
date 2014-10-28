@@ -1,6 +1,6 @@
-#### Summer Placement Project @ Wellcome Trust Sanger Institute, Hinxton
+### npg_docker
 
-*Last update: 27/10/14 (sd15)*
+*Last update: 28/10/14 (sd15)*
 
 This repository centralizes the various small prototypes of Stefan Dang's Placement Project @ Wellcome Trust Sanger Institute, Hinxton. The purpose of this 3 month project was to explore the possibilities to wrap up different alignment programs / pipelines in [Docker](https://www.docker.com/) containers, either for production in closed environments or as Illumina BaseSpace Native Apps. Please refer to the preliminary [slides](IGM-talk_docker-pipelines.pdf) of the Sanger Informatics Group Meeting talk for more fancy illustrations.
 

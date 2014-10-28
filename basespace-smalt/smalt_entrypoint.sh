@@ -26,6 +26,10 @@ COMPLETED=0                       # Make sure alignment has run at least once
 [[ -z "$INSERT_MAX" ]] && INSERT_MAX="500"
 [[ -z "$INSERT_MIN" ]] && INSERT_MIN="0"
 
+
+# (For local testing:) Detect if iGenomes present, else: copy local E.coli ref
+[[ ! -d /genomes ]] && mv /test/genomes /genomes
+
 # Indexing
 smalt index -k "$INDEX_WORDLEN" -s "$INDEX_STEPSIZE" "$INDEX" "$INDEX.fa"
 
@@ -33,13 +37,15 @@ smalt index -k "$INDEX_WORDLEN" -s "$INDEX_STEPSIZE" "$INDEX" "$INDEX.fa"
 mkdir -p "/data/output/appresults/$PROJECT_ID/smalt"
 
 # Iterate over all files
-find /data/input/samples
+find /data/
 for input_file in /data/input/samples/*/*; do
-  filename=$(basename "$input_file" .fastq.gz)
-  output_base=/data/output/appresults/$PROJECT_ID/smalt/$filename
+  # Strip away every file extension beginning with .fastq (e.g. fastq.12.gz)
+  filename=$(basename "$input_file")
+  file_base=${filename%.fastq.*}
+  output_base=/data/output/appresults/$PROJECT_ID/smalt/$file_base
 
   # Only process R1 (following Illumina naming convention), check for R2 below
-  if [[ $filename =~ _R1 ]]; then
+  if [[ $file_base =~ _R1 ]]; then
     gzip -dc "$input_file" > input.fastq || err "Could not decompress $filename. Valid sample?"
 
     # Set post-processing pipeline:
@@ -55,7 +61,7 @@ for input_file in /data/input/samples/*/*; do
     > "$output_base.bam" &
 
     # Check for R2; Map paired reads, pipe into postproc_pipe
-    mate=${input_file/_R1_/_R2_}
+    mate=${input_file/_R1/_R2}
     if [ -e "$mate" ]; then
       gzip -dc "$mate" > mate.fastq
       mate="mate.fastq"
@@ -77,7 +83,7 @@ for input_file in /data/input/samples/*/*; do
 
     # Plot stats
     plot-bamstats "$output_base.stats" \
-      -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$filename"
+      -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$file_base"
 
     # Output used binary / library versions (also in bam header)
     echo -e "    bambamc: $bambamc_version\n\

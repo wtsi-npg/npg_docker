@@ -36,8 +36,8 @@ smalt index -k "$INDEX_WORDLEN" -s "$INDEX_STEPSIZE" "$INDEX" "$INDEX.fa"
 # Prepare output folders, respecting Basespace naming convention
 mkdir -p "/data/output/appresults/$PROJECT_ID/smalt"
 
-# Iterate over all fastq files; Piping in a list via find in line 105
-while read -r -d "" input_file ; do
+# Iterate over all fastq files
+while read -r -d "" input_file ; do # A FIND IS PIPED INTO THIS, SEE DONE (LINE 105)
   # Strip away every file extension beginning with .fastq (e.g. fastq.12.gz)
   filename=$(basename "$input_file")
   file_base=${filename%.fastq.*}
@@ -102,7 +102,7 @@ while read -r -d "" input_file ; do
     [[ $filename == *_R2* ]] || echo "Skipped: $filename ($input_file)"
   fi
 
-done <  <(find /data/input/samples/ -name "*.fastq*gz" -print0)
+done < <(find /data/input/samples/ -name "*.fastq*gz" -print0)
 
 # Make sure loop has run at least once
 [[ $COMPLETED == 0 ]] && err "No alignment has been performed. Please choose\

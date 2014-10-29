@@ -27,8 +27,8 @@ COMPLETED=0                       # Make sure alignment has run at least once
 [[ -z "$INSERT_MIN" ]] && INSERT_MIN="0"
 
 
-# (For local testing:) Detect if iGenomes present, else: copy local E.coli ref
-[[ ! -d /genomes ]] && mv /test/genomes /genomes
+# (For local testing:) Move local E.coli reference if not present
+[[ ! -d /genomes/ ]] && mv /test/genomes/ /genomes/
 
 # Indexing
 smalt index -k "$INDEX_WORDLEN" -s "$INDEX_STEPSIZE" "$INDEX" "$INDEX.fa"
@@ -36,9 +36,8 @@ smalt index -k "$INDEX_WORDLEN" -s "$INDEX_STEPSIZE" "$INDEX" "$INDEX.fa"
 # Prepare output folders, respecting Basespace naming convention
 mkdir -p "/data/output/appresults/$PROJECT_ID/smalt"
 
-# Iterate over all files
-find /data/
-for input_file in /data/input/samples/*/*; do
+# Iterate over all fastq files
+find /data/input/samples/ -name "*.fastq*gz" | while read -r input_file ; do
   # Strip away every file extension beginning with .fastq (e.g. fastq.12.gz)
   filename=$(basename "$input_file")
   file_base=${filename%.fastq.*}
@@ -99,13 +98,14 @@ for input_file in /data/input/samples/*/*; do
 
     COMPLETED=1
   else
-    echo "Skipped: $filename ($input_file)"
+    # Report skipped files that aren't 2nd reads
+    [[ $filename == *_R2* ]] || echo "Skipped: $filename ($input_file)"
   fi
 
 done
 
 # Make sure loop has run at least once
-[[ $COMPLETED == 0 ]] && err "No alignment has been performed. Please choose \
-  compatible fastq.gz input samples"
+[[ $COMPLETED == 0 ]] && err "No alignment has been performed. Please choose\
+ compatible fastq.gz input samples"
 
 exit 0

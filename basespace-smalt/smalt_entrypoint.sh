@@ -37,7 +37,7 @@ smalt index -k "$INDEX_WORDLEN" -s "$INDEX_STEPSIZE" "$INDEX" "$INDEX.fa"
 mkdir -p "/data/output/appresults/$PROJECT_ID/smalt"
 
 # Iterate over all fastq files
-find /data/input/samples/ -name "*.fastq*gz" | while read -r input_file ; do
+while read -r input_file ; do
   # Strip away every file extension beginning with .fastq (e.g. fastq.12.gz)
   filename=$(basename "$input_file")
   file_base=${filename%.fastq.*}
@@ -102,7 +102,7 @@ find /data/input/samples/ -name "*.fastq*gz" | while read -r input_file ; do
     [[ $filename == *_R2* ]] || echo "Skipped: $filename ($input_file)"
   fi
 
-done
+done <  <(find /data/input/samples/ -name "*.fastq*gz")
 
 # Make sure loop has run at least once
 [[ $COMPLETED == 0 ]] && err "No alignment has been performed. Please choose\

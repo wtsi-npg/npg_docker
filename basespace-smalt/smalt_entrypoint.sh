@@ -76,7 +76,7 @@ while read -r -d "" input_file ; do # A FIND IS PIPED INTO THIS, SEE DONE (LINE 
 
     # Check if results are complete
     if ! [[ -e "$output_base.bam" && -e "$output_base.flagstat" && -e "$output_base.stats" \
-      && -e "$output_base.md5" && -e "$output_base.index" ]]; then
+      && -e "$output_base.md5" && -e "$output_base.bai" ]]; then
       err "Results for $input_file are incomplete."
     fi
 

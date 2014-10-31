@@ -56,7 +56,7 @@ while read -r -d "" input_file ; do # A FIND IS PIPED INTO THIS, SEE DONE (LINE 
     | tee >(samtools flagstat - > "$output_base.flagstat") \
           >(samtools stats - > "$output_base.stats") \
     | bamrecompress md5=1 md5filename="$output_base.md5" \
-                    index=1 indexfilename="$output_base.index" \
+                    index=1 indexfilename="$output_base.bai" \
     > "$output_base.bam" &
 
     # Check for R2; Map paired reads, pipe into postproc_pipe

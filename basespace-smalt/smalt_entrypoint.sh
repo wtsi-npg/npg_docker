@@ -82,7 +82,7 @@ while read -r -d "" input_file ; do # A FIND IS PIPED INTO THIS, SEE DONE (LINE 
 
     # Plot stats
     plot-bamstats "$output_base.stats" \
-      -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$file_base"
+      -p "/data/output/appresults/$PROJECT_ID/smalt/plot-bamstats/$file_base."
 
     # Output used binary / library versions (also in bam header)
     echo -e "    bambamc: $bambamc_version\n\

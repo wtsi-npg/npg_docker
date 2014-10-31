@@ -13,39 +13,36 @@
     <div class="row">
         <!-- Text -->
         <span class="col-span-12">
-            <!-- Flagstats -->
-            <div class="col-md-6">
-                <h2 class="bs-section-heading">Flagstats</h2>
-
-                {% for key in result.files %}
-                    {% if key contains '.flagstat' %}
-                        <pre>{{ result.files[key].content }}</pre>
-                    {% endif %}
-                {% endfor %}
-            </div>
             <!-- Versions -->
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h2 class="bs-section-heading">Bioinformatic Tools used in pipeline</h2>
 
                 {% for key in result.files %}
                     {% if key contains '.version' %}
-                        <pre>{{ result.files[key].content }}</pre>
+                        <pre width="50%">{{ result.files[key].content }}</pre>
                     {% endif %}
                 {% endfor %}
             </div>
         </span>
     </div>
 
-    <div class="row">
+    <div class="row" style="margin-top:100px">
         <!-- Plots IMG -->
         <span class="col-span-12">
             <h2 class="bs-section-heading" style="padding-left:1em;">Plot Stats</h2>
             {% for key in result.files %}
-                {% if key contains '.png' %}
-                <div class="col-md-6">
-                    <h4>{{ key | replace:'.*001-(.*).png','$1' | replace:'-',' ' }}</h4>
-                    <img src="{{ result.files[key].href }}"></img>
-                </div>
+                <!-- Flagstats -->
+                {% if key contains '.flagstat' %}
+                    <div class="col-md-12"><hr></div>
+                    <div class="col-md-6">
+                        <h4>Flagstats</h4>
+                        <pre width="50%">{{ result.files[key].content }}</pre>
+                    </div>
+                {% elsif key contains '.png' %}
+                    <div class="col-md-6">
+                        <h4>{{ key | replace:'.-(.*).png','$1' | replace:'-',' ' }}</h4>
+                        <img src="{{ result.files[key].href }}"></img>
+                    </div>
                 {% endif %}
             {% endfor %}
         </span>
